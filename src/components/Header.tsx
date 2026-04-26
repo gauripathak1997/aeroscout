@@ -44,9 +44,23 @@ export function Header() {
             </Link>
           </nav>
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Coins className="h-3.5 w-3.5" />
-          <span className="font-mono"><span className="text-foreground font-medium">{getCreditBalance()}</span> credits</span>
+        <div className="flex items-center gap-4">
+          <div className={cn(
+            "flex items-center gap-1.5 text-xs",
+            getCreditBalance() <= 0 ? "text-destructive" : "text-muted-foreground"
+          )}>
+            <Coins className="h-3.5 w-3.5" />
+            <span className="font-mono"><span className={cn("font-medium", getCreditBalance() <= 0 ? "text-destructive" : "text-foreground")}>{getCreditBalance()}</span> credits</span>
+          </div>
+          <Link
+            to="/get-credits"
+            className={cn(
+              "text-sm transition-colors",
+              location.pathname === "/get-credits" ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Get Credits
+          </Link>
         </div>
       </div>
     </header>

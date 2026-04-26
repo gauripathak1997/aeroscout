@@ -7,7 +7,7 @@ export function Footer() {
             About AeroScout
           </h3>
           <p>
-            AeroScout is a commercial aircraft intelligence platform designed to identify acquisition and lease opportunities through structured data and explainable scoring models.
+            AeroScout is a commercial aircraft intelligence platform designed to identify acquisition and lease opportunities through structured data and explainable scoring models. AeroScout was developed based on firsthand experience in airline fleet teams, where maintaining aircraft data often required months of manual effort.
           </p>
         </div>
 

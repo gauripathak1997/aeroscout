@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { getAircraftDetail } from "@/api/aircraft";
+import { getAircraftDetail, getCreditBalance } from "@/api/aircraft";
+import { OutOfCreditsWarning } from "@/components/OutOfCreditsWarning";
 import type { AircraftDetail as AircraftDetailType } from "@/types/aircraft";
 import {
   ArrowLeft,
@@ -154,10 +155,16 @@ export default function AircraftDetailPage() {
   const navigate = useNavigate();
   const [data, setData] = useState<AircraftDetailType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [outOfCredits, setOutOfCredits] = useState(false);
 
   useEffect(() => {
     if (!id) return;
     setLoading(true);
+    if (getCreditBalance() <= 0) {
+      setOutOfCredits(true);
+      setLoading(false);
+      return;
+    }
     getAircraftDetail(id).then((d) => { setData(d); setLoading(false); });
   }, [id]);
 
@@ -168,6 +175,23 @@ export default function AircraftDetailPage() {
         <div className="flex items-center justify-center py-32">
           <Loader2 className="h-5 w-5 text-muted-foreground animate-spin" />
         </div>
+      </div>
+    );
+  }
+
+  if (outOfCredits) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="max-w-3xl mx-auto px-6 py-16">
+          <button
+            onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/lookup"))}
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back
+          </button>
+          <OutOfCreditsWarning />
+        </main>
       </div>
     );
   }
@@ -301,6 +325,21 @@ export default function AircraftDetailPage() {
                 accent="bg-primary/10 text-primary"
               />
             </div>
+          </div>
+        </section>
+
+        {/* DATA COMPLETENESS */}
+        <section className="mb-8 animate-fade-in">
+          <div className="flex items-center justify-between gap-4 px-5 py-3 rounded-xl border border-border bg-card/40">
+            <span className="text-xs text-muted-foreground">
+              Data completeness: <span className="font-mono text-foreground/80">{Math.round(data.data_completeness * 100)}%</span>
+            </span>
+            <Link
+              to="/get-credits"
+              className="text-xs text-foreground/80 hover:text-primary transition-colors inline-flex items-center gap-1"
+            >
+              Is this your aircraft? <span className="text-foreground/90">Help verify details</span> <span className="text-muted-foreground/60">→</span> <span className="text-primary">earn credits</span>
+            </Link>
           </div>
         </section>
 

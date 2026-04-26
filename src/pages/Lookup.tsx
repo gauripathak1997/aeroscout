@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { getDirectoryPreview } from "@/api/aircraft";
@@ -59,13 +59,26 @@ export default function Lookup() {
 
         {/* ── SECONDARY: DATASET PREVIEW ─────────────────────── */}
         <section className="pb-12">
-          <div className="mb-4">
-            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-1">
-              Dataset Preview
-            </h2>
-            <p className="text-xs text-muted-foreground">
-              A snapshot of currently tracked aircraft across the fleet.
-            </p>
+          <div className="mb-4 flex items-end justify-between gap-4 flex-wrap">
+            <div>
+              <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-1">
+                Dataset Preview
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                A snapshot of currently tracked aircraft across the fleet.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 text-xs">
+              <span className="text-muted-foreground">
+                Data completeness: <span className="font-mono text-foreground/80">92%</span>
+              </span>
+              <Link
+                to="/get-credits"
+                className="text-foreground/80 hover:text-primary transition-colors inline-flex items-center gap-1"
+              >
+                Help improve this <span className="text-muted-foreground/60">→</span> <span className="text-primary">earn credits</span>
+              </Link>
+            </div>
           </div>
 
           <div className="rounded-xl border border-border overflow-hidden bg-card/30">
